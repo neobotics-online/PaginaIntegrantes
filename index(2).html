@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reconocimiento Especial · 3° Medio A 2026</title>
+<meta name="theme-color" content="#0b0b0b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Montserrat:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold-1:#fff3b0;
+    --gold-2:#f5c542;
+    --gold-3:#c8891a;
+    --gold-4:#7a4d08;
+    --bg:#0b0b0b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:
+      radial-gradient(ellipse at 50% 0%, #2a2206 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 100%, #1d1604 0%, transparent 55%),
+      var(--bg);
+    color:#fff;
+    font-family:'Montserrat',system-ui,sans-serif;
+    overflow-x:hidden;
+    min-height:100vh;
+    display:flex;flex-direction:column;
+  }
+
+  /* ---------- Tiras de película ---------- */
+  .strip{
+    height:64px;flex:0 0 auto;background:#000;position:relative;z-index:5;
+    border-top:1px solid #222;border-bottom:1px solid #222;
+    box-shadow:0 0 30px rgba(245,197,66,.15);
+  }
+  .strip::before{
+    content:"";position:absolute;left:0;right:0;top:50%;height:26px;transform:translateY(-50%);
+    background:repeating-linear-gradient(90deg,
+      #d9a82f 0 26px, transparent 26px 52px);
+    border-radius:3px;
+    opacity:.9;
+    animation:strip 6s linear infinite;
+    background-size:52px 100%;
+  }
+  .strip.bottom::before{animation-direction:reverse}
+  @keyframes strip{to{background-position:-104px 0}}
+
+  /* ---------- Focos ---------- */
+  .beams{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+  .beam{
+    position:absolute;top:-10%;width:34vmax;height:120vmax;
+    background:linear-gradient(to bottom, rgba(255,226,130,.22), transparent 70%);
+    clip-path:polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+    transform-origin:50% 0;filter:blur(6px);
+    mix-blend-mode:screen;
+  }
+  .beam.b1{left:-8vmax;animation:sweepL 9s ease-in-out infinite}
+  .beam.b2{right:-8vmax;animation:sweepR 11s ease-in-out infinite}
+  @keyframes sweepL{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(14deg)}}
+  @keyframes sweepR{0%,100%{transform:rotate(18deg)}50%{transform:rotate(-14deg)}}
+
+  canvas#sparks{position:fixed;inset:0;z-index:2;pointer-events:none}
+
+  /* ---------- Contenido ---------- */
+  main{
+    position:relative;z-index:3;flex:1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:28px 18px 40px;text-align:center;
+  }
+
+  .reel{
+    width:clamp(84px,18vw,130px);height:auto;
+    filter:drop-shadow(0 0 18px rgba(245,197,66,.55));
+    animation:pop 1.2s cubic-bezier(.2,1.4,.4,1) both, float 5s ease-in-out 1.2s infinite;
+  }
+  .reel .spin{transform-origin:50px 50px;animation:spin 8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes pop{from{opacity:0;transform:scale(.2) rotate(-90deg)}to{opacity:1;transform:none}}
+  @keyframes float{50%{transform:translateY(-8px)}}
+
+  .trophy{font-size:clamp(2rem,6vw,3rem);margin-bottom:6px;animation:pop 1s .1s both}
+
+  h1{
+    font-family:'Oswald',Impact,sans-serif;font-weight:700;
+    font-size:clamp(2rem,7.5vw,4.6rem);
+    letter-spacing:.08em;text-transform:uppercase;line-height:1.05;
+    margin-top:14px;
+    background:linear-gradient(100deg,var(--gold-3) 0%,var(--gold-1) 25%,var(--gold-2) 45%,var(--gold-4) 55%,var(--gold-1) 75%,var(--gold-3) 100%);
+    background-size:250% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:shine 4s linear infinite, rise 1s .4s both;
+    filter:drop-shadow(0 2px 12px rgba(245,197,66,.35));
+  }
+  @keyframes shine{to{background-position:-250% 0}}
+  @keyframes rise{from{opacity:0;transform:translateY(24px);letter-spacing:.3em}to{opacity:1;transform:none}}
+
+  .sub{
+    margin-top:10px;font-style:italic;font-weight:400;
+    font-size:clamp(.85rem,2.6vw,1.2rem);letter-spacing:.14em;
+    color:#e9d8a1;opacity:0;animation:rise 1s .9s both;
+  }
+
+  .divider{
+    width:min(320px,70%);height:2px;margin:26px auto 30px;
+    background:linear-gradient(90deg,transparent,var(--gold-2),transparent);
+    transform:scaleX(0);animation:grow 1.2s 1.2s forwards;
+    position:relative;
+  }
+  .divider::after{
+    content:"★";position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);
+    color:var(--gold-2);background:var(--bg);padding:0 10px;font-size:14px;
+  }
+  @keyframes grow{to{transform:scaleX(1)}}
+
+  /* ---------- Nombres ---------- */
+  .names{
+    list-style:none;
+    display:grid;gap:14px 18px;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:min(1000px,100%);
+  }
+  @media(min-width:700px){.names{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(min-width:1000px){.names{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+  .names li{
+    position:relative;overflow:hidden;
+    padding:14px 10px;border-radius:10px;
+    border:1px solid rgba(245,197,66,.28);
+    background:linear-gradient(160deg,rgba(245,197,66,.08),rgba(0,0,0,.35));
+    font-style:italic;font-weight:500;
+    font-size:clamp(.95rem,3.3vw,1.35rem);letter-spacing:.07em;
+    opacity:0;transform:translateY(30px) scale(.94);
+    animation:in .8s cubic-bezier(.2,.9,.3,1.2) forwards;
+    animation-delay:calc(1.6s + var(--i)*.14s);
+    transition:transform .3s, box-shadow .3s, border-color .3s;
+    cursor:default;
+  }
+  .names li span{
+    background:linear-gradient(100deg,var(--gold-3),var(--gold-1) 30%,var(--gold-2) 50%,var(--gold-1) 70%,var(--gold-3));
+    background-size:250% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:shine 5s linear infinite;animation-delay:calc(var(--i)*-.4s);
+  }
+  /* brillo que cruza cada tarjeta */
+  .names li::after{
+    content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,243,176,.35),transparent);
+    transform:skewX(-20deg);
+    animation:glint 5.5s ease-in-out infinite;
+    animation-delay:calc(3s + var(--i)*.35s);
+  }
+  @keyframes glint{0%{left:-80%}30%,100%{left:140%}}
+  @keyframes in{to{opacity:1;transform:none}}
+  .names li:hover,.names li:active{
+    transform:translateY(-4px) scale(1.04);
+    border-color:var(--gold-2);
+    box-shadow:0 0 22px rgba(245,197,66,.45);
+  }
+
+  footer{
+    position:relative;z-index:3;text-align:center;
+    padding:0 0 16px;font-family:'Oswald',sans-serif;
+    letter-spacing:.25em;font-size:.85rem;color:var(--gold-2);
+    opacity:0;animation:rise 1s 3.4s both;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0s!important}
+    .names li,.sub,.divider,footer{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="beams"><div class="beam b1"></div><div class="beam b2"></div></div>
+<canvas id="sparks"></canvas>
+
+<div class="strip top"></div>
+
+<main>
+  <svg class="reel" viewBox="0 0 100 100" aria-hidden="true">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fff3b0"/><stop offset=".5" stop-color="#f5c542"/><stop offset="1" stop-color="#9a6410"/>
+      </linearGradient>
+    </defs>
+    <g class="spin">
+      <circle cx="50" cy="50" r="46" fill="url(#g)"/>
+      <circle cx="50" cy="50" r="40" fill="#111"/>
+      <circle cx="50" cy="50" r="38" fill="url(#g)" opacity=".9"/>
+      <g fill="#111">
+        <ellipse cx="50" cy="26" rx="9" ry="12"/>
+        <ellipse cx="50" cy="26" rx="9" ry="12" transform="rotate(72 50 50)"/>
+        <ellipse cx="50" cy="26" rx="9" ry="12" transform="rotate(144 50 50)"/>
+        <ellipse cx="50" cy="26" rx="9" ry="12" transform="rotate(216 50 50)"/>
+        <ellipse cx="50" cy="26" rx="9" ry="12" transform="rotate(288 50 50)"/>
+        <circle cx="50" cy="50" r="5"/>
+      </g>
+    </g>
+  </svg>
+
+  <h1>Reconocimiento Especial</h1>
+  <p class="sub">integrantes que dieron vida a esta película</p>
+  <div class="divider"></div>
+
+  <ul class="names" id="names">
+    <li style="--i:0"><span>Camilo Hugo</span></li>
+    <li style="--i:1"><span>Vicente Toro</span></li>
+    <li style="--i:2"><span>Nicolas Alvarez</span></li>
+    <li style="--i:3"><span>Angel Cornejo</span></li>
+    <li style="--i:4"><span>Francisco Lopez</span></li>
+    <li style="--i:5"><span>Benjamin Nahuelpan</span></li>
+    <li style="--i:6"><span>Martina Alvarado</span></li>
+    <li style="--i:7"><span>Sebastian Velazques</span></li>
+    <li style="--i:8"><span>Joaquin Lagos</span></li>
+    <li style="--i:9"><span>Juan Pablo Chávez</span></li>
+    <li style="--i:10"><span>Martina Gonzalez</span></li>
+    <li style="--i:11"><span>Tomas Orellana</span></li>
+  </ul>
+</main>
+
+<footer>3° MEDIO A · 2026</footer>
+<div class="strip bottom"></div>
+
+<script>
+/* Partículas doradas flotando + explosión al tocar */
+(function(){
+  const c = document.getElementById('sparks');
+  const ctx = c.getContext('2d');
+  let W, H, dpr = Math.min(window.devicePixelRatio||1, 2);
+  function resize(){
+    W = innerWidth; H = innerHeight;
+    c.width = W*dpr; c.height = H*dpr;
+    c.style.width = W+'px'; c.style.height = H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  addEventListener('resize', resize); resize();
+
+  const colors = ['255,243,176','245,197,66','200,137,26'];
+  const parts = [];
+  function make(x,y,burst){
+    const a = Math.random()*Math.PI*2;
+    const s = burst ? 1.5+Math.random()*3.5 : 0.2+Math.random()*0.5;
+    return {
+      x, y,
+      vx: burst ? Math.cos(a)*s : (Math.random()-.5)*.3,
+      vy: burst ? Math.sin(a)*s : -s,
+      r: burst ? 1+Math.random()*2.2 : 0.8+Math.random()*2,
+      life: burst ? 1 : Math.random(),
+      decay: burst ? .015+Math.random()*.02 : .002+Math.random()*.004,
+      col: colors[(Math.random()*colors.length)|0],
+      tw: Math.random()*6.28
+    };
+  }
+  const N = Math.min(90, Math.floor(W/12));
+  for(let i=0;i<N;i++) parts.push(make(Math.random()*W, Math.random()*H, false));
+
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+    for(let i=parts.length-1;i>=0;i--){
+      const p = parts[i];
+      p.x += p.vx; p.y += p.vy; p.tw += .08;
+      p.life -= p.decay;
+      if(p.vy>-0.05 && p.decay>.01) p.vy += .03; // gravedad en explosiones
+      if(p.life<=0 || p.y<-10){
+        if(p.decay>.01){ parts.splice(i,1); continue; }
+        Object.assign(p, make(Math.random()*W, H+10, false)); p.life = 1;
+      }
+      const a = Math.max(0,p.life) * (0.5+0.5*Math.sin(p.tw));
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba('+p.col+','+a.toFixed(3)+')';
+      ctx.shadowColor = 'rgba('+p.col+',.9)'; ctx.shadowBlur = 8;
+      ctx.arc(p.x,p.y,p.r,0,6.283); ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  function burst(e){
+    const t = e.touches ? e.touches[0] : e;
+    for(let i=0;i<40;i++) parts.push(make(t.clientX, t.clientY, true));
+  }
+  addEventListener('pointerdown', burst);
+
+  // Lluvia de chispas al cargar
+  setTimeout(()=>{ for(let k=0;k<5;k++) setTimeout(()=>{
+    const x = W*(.15+Math.random()*.7), y = H*(.2+Math.random()*.4);
+    for(let i=0;i<35;i++) parts.push(make(x,y,true));
+  }, k*350); }, 1000);
+})();
+</script>
+</body>
+</html>
